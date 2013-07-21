@@ -2,8 +2,12 @@ var express = require('express');
 
 var app = express.createServer(express.logger());
 
-app.use(express.static(__dirname + '/assets'));
-app.use(express.static(__dirname + '/bootstrap'));
+app.configure(function(){
+    app.set("view options", { layout: false, pretty: true });
+    app.use(express.favicon());
+    app.use(express.static(__dirname + '/public'));
+}
+);
 
 app.get('/', function(request, response) {
     var fs = require('fs');
@@ -12,7 +16,7 @@ app.get('/', function(request, response) {
     response.send(ret);
 });
 
-var port = process.env.PORT || 5000;
+var port = process.env.PORT || 8080;
 app.listen(port, function() {
   console.log("Listening on " + port);
 });
